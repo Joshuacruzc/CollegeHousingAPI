@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.db import models
+from django.contrib.gis.db import models
 
 
 class Owner(models.Model):
@@ -10,7 +10,8 @@ class Owner(models.Model):
 
 
 class Housing(models.Model):
-    location = models.CharField(max_length=64)
+    location = models.PointField()
+    address = models.CharField(max_length=100)
     owned_by = models.ForeignKey(Owner, null=True, on_delete=models.CASCADE)
 
 

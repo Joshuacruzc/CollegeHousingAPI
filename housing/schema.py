@@ -1,9 +1,7 @@
 import graphene
-from django.contrib.auth.models import User
 from django.db.models import Q
 from graphene_django import DjangoObjectType
 
-from users.schema import UserType
 from .models import Housing, Owner
 
 
