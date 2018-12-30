@@ -6,5 +6,5 @@ from housing.models import Housing
 
 @admin.register(Housing)
 class HousingAdmin(OSMGeoAdmin):
-    list_display = ('')
+    list_display = ('address', 'owner')
 

@@ -1,6 +1,7 @@
 import graphene
 from django.db.models import Q
 from graphene_django import DjangoObjectType
+from graphql_geojson import GeoJSONType
 
 from .models import Housing, Owner
 
@@ -10,9 +11,10 @@ class OwnerType(DjangoObjectType):
         model = Owner
 
 
-class HousingType(DjangoObjectType):
+class HousingType(GeoJSONType):
     class Meta:
         model = Housing
+        geojson_field = 'location'
 
 
 class Query(graphene.ObjectType):
@@ -25,9 +27,9 @@ class Query(graphene.ObjectType):
         houses = Housing.objects.filter(**kwargs)
         if search:
             houses.objects.filter(
-                Q(location__icontains=search) |
-                Q(tags__description__icontains=search)
-                # TODO add owner name as search parameter
+                Q(address__icontains=search) |
+                Q(tags__description__icontains=search) |
+                Q(owner__company_name__icontains=search)
             )
         return houses
 
@@ -56,7 +58,7 @@ class CreateHousing(graphene.Mutation):
 
     def mutate(self, info, location):
         user = info.context.user.owner or None
-        housing = Housing(location=location, owned_by=user)
+        housing = Housing(location=location, owner=user)
         housing.save()
 
         return CreateHousing(housing=housing)

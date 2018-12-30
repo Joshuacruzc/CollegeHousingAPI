@@ -3,3 +3,4 @@ psycopg2
 graphene-django
 django-filter
 django-graphql-jwt
+django-graphql-geojson

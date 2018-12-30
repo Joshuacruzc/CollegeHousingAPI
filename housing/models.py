@@ -8,10 +8,14 @@ class Owner(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     company_name = models.CharField(max_length=32, null=True)
 
+    def __str__(self):
+        return self.user.__str__()
+
 
 class Housing(models.Model):
     location = models.PointField()
     address = models.CharField(max_length=100)
-    owned_by = models.ForeignKey(Owner, null=True, on_delete=models.CASCADE)
+    owner = models.ForeignKey(Owner, null=True, on_delete=models.CASCADE)
 
-
+    def __str__(self):
+        return self.address
