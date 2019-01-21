@@ -1,4 +1,7 @@
 import graphene
+import graphql_geojson
+from django.contrib.gis.db.models.functions import Distance
+from django.contrib.gis.measure import D
 from django.db.models import Q
 from graphene_django import DjangoObjectType
 from graphql_geojson import GeoJSONType
@@ -18,15 +21,27 @@ class HousingType(GeoJSONType):
 
 
 class Query(graphene.ObjectType):
-    houses = graphene.List(HousingType, search=graphene.String())
+    houses = graphene.List(
+        HousingType,
+        search=graphene.String(),
+        ref_location=graphql_geojson.Geometry(),
+        distance=graphene.Int(),
+    )
     house = graphene.Field(HousingType, id=graphene.Int())
-    owners = graphene.List(OwnerType, search=graphene.String())
+    owners = graphene.List(
+        OwnerType,
+        search=graphene.String()
+    )
     owner = graphene.Field(OwnerType, id=graphene.Int())
 
-    def resolve_houses(self, info, search=None, **kwargs):
+    def resolve_houses(self, info, search=None, distance=10, ref_location=None, **kwargs):
         houses = Housing.objects.filter(**kwargs)
+        if ref_location:
+            houses = houses.filter(location__distance_lte=(ref_location, D(km=distance)))\
+                .annotate(distance=Distance('location', ref_location)).order_by('distance')
+
         if search:
-            houses.objects.filter(
+            houses = houses.filter(
                 Q(address__icontains=search) |
                 Q(tags__description__icontains=search) |
                 Q(owner__company_name__icontains=search)
@@ -48,22 +63,25 @@ class Query(graphene.ObjectType):
 
     def resolve_owner(self, info, id):
         owner = Owner.objects.get(pk=id)
+        return owner
 
 
 class CreateHousing(graphene.Mutation):
     housing = graphene.Field(HousingType)
 
     class Arguments:
-        location = graphene.String()
+        address = graphene.String()
+        location = graphql_geojson.Geometry()
+        owner_id = graphene.Int()
 
-    def mutate(self, info, location):
-        user = info.context.user.owner or None
-        housing = Housing(location=location, owner=user)
+    def mutate(self, info, **kwargs):
+        # TODO Get owner from context instead
+        housing = Housing(**kwargs)
         housing.save()
 
         return CreateHousing(housing=housing)
 
-
+ 
 class CreateOwner(graphene.Mutation):
     owner = graphene.Field(OwnerType)
 
