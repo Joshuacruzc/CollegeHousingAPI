@@ -15,6 +15,9 @@ class OwnerType(DjangoObjectType):
 
 
 class HousingType(GeoJSONType):
+    def resolve_images(self, context):
+        return context.context._current_scheme_host + '/' + self.images.url
+
     class Meta:
         model = Housing
         geojson_field = 'location'

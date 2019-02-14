@@ -16,6 +16,7 @@ class Housing(models.Model):
     location = models.PointField()
     address = models.CharField(max_length=100)
     owner = models.ForeignKey(Owner, null=True, on_delete=models.CASCADE)
+    images = models.ImageField(upload_to='images')
 
     def __str__(self):
         return self.address

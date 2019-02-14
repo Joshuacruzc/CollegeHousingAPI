@@ -25,7 +25,7 @@ SECRET_KEY = 'h$di$j42^ux0@#7=%)j8j5nc$xc-yqb#4*qn4^v9+0^mov8=&1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -130,6 +130,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 STATIC_URL = '/static/'
+ENV_PATH = os.path.abspath(os.path.dirname(__file__))
+MEDIA_ROOT = os.path.join(ENV_PATH, 'media/')
 GRAPHENE = {
     'SCHEMA': 'CollegeHousing.schema.schema',
 }
