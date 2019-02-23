@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib.gis.db import models
+from django.utils.safestring import mark_safe
 
 
 class Owner(models.Model):
@@ -17,6 +18,12 @@ class Housing(models.Model):
     address = models.CharField(max_length=100)
     owner = models.ForeignKey(Owner, null=True, on_delete=models.CASCADE)
     images = models.ImageField(upload_to='images')
+
+    def image_tag(self):
+        return mark_safe(u'<img src="%s" />' % self.images.url)
+
+    image_tag.short_description = 'Image'
+    image_tag.allow_tags = True
 
     def __str__(self):
         return self.address
