@@ -6,9 +6,9 @@ from housing.models import Housing, Owner
 
 @admin.register(Housing)
 class HousingAdmin(OSMGeoAdmin):
-    readonly_fields = ['image_tag']
     list_display = ('address', 'owner')
-    fields = ['image_tag']
+    readonly_fields = []
+    fields = ['address', 'owner', 'location']
 
 
 @admin.register(Owner)

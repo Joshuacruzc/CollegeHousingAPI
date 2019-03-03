@@ -38,9 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
-    'graphene_django',
     'housing',
     'tags',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -49,7 +49,6 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'graphql_jwt.middleware.JSONWebTokenMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -112,6 +111,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
@@ -134,9 +141,6 @@ STATIC_URL = '/static/'
 ENV_PATH = os.path.abspath(os.path.dirname(__file__))
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = "/media/"
-GRAPHENE = {
-    'SCHEMA': 'CollegeHousing.schema.schema',
-}
 
 # This setups the path for the GeoSpatial libraries in Windows
 if os.name == 'nt':

@@ -14,15 +14,23 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf import settings
+from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.views.decorators.csrf import csrf_exempt
-from graphene_django.views import GraphQLView
+from rest_framework import routers
 
+from housing import views
+from housing.views import HousingViewSet
+
+router = routers.DefaultRouter()
+
+router.register(r'housing', HousingViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True))),
+    url(r'^', include(router.urls)),
+    path('images/', csrf_exempt(views.upload_image), name="upload")
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
