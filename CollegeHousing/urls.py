@@ -21,12 +21,15 @@ from django.urls import path, include
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import routers
 
+from colleges.views import CollegeViewSet
 from housing import views
 from housing.views import HousingViewSet
 
 router = routers.DefaultRouter()
 
 router.register(r'housing', HousingViewSet)
+router.register(r'colleges', CollegeViewSet)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^', include(router.urls)),

@@ -28,6 +28,14 @@ class HousingSerializer(serializers.ModelSerializer):
     tags = serializers.StringRelatedField(many=True)
     owner = OwnerSerializer(many=False)
     images = ImageSerializer(many=True)
+    latitude = serializers.SerializerMethodField()
+    longitude = serializers.SerializerMethodField()
+
+    def get_latitude(self, obj):
+        return obj.location.coords[1]
+
+    def get_longitude(self, obj):
+        return obj.location.coords[0]
 
     class Meta:
         model = Housing

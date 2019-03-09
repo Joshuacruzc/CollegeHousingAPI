@@ -21,9 +21,14 @@ class Housing(models.Model):
     address = models.CharField(max_length=100)
     owner = models.ForeignKey(Owner, null=True, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag)
+    rent = models.IntegerField(null=True)
 
     def __str__(self):
         return self.address
+
+    class Meta:
+        verbose_name = "House"
+        verbose_name_plural = "Houses"
 
 
 class Image(models.Model):

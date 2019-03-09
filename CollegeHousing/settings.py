@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'housing',
     'tags',
     'rest_framework',
+    'colleges',
 ]
 
 MIDDLEWARE = [
