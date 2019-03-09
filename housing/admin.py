@@ -9,7 +9,8 @@ from tags.admin import TagInline
 class HousingAdmin(OSMGeoAdmin):
     list_display = ('address', 'owner')
     readonly_fields = []
-    fields = ['address', 'owner', 'location']
+    fields = ['address', 'owner', 'location', 'bedrooms', 'bathrooms', 'spaces_available', 'description', 'gender',
+              'availability_date']
     inlines = [
         TagInline,
     ]

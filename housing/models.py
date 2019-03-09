@@ -17,11 +17,23 @@ class Owner(models.Model):
 
 
 class Housing(models.Model):
+
+    GENDER_CHOICES = (
+        ('F', 'Female'),
+        ('M', 'Male'),
+        ('U', 'Unisex'),
+    )
     location = models.PointField()
     address = models.CharField(max_length=100)
     owner = models.ForeignKey(Owner, null=True, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag)
-    rent = models.IntegerField(null=True)
+    rent = models.PositiveIntegerField(null=True)
+    bedrooms = models.PositiveIntegerField()
+    bathrooms = models.PositiveIntegerField()
+    spaces_available = models.PositiveIntegerField()
+    description = models.TextField(null=True)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    availability_date = models.DateField(null=True)
 
     def __str__(self):
         return self.address
