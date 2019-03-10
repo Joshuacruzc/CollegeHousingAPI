@@ -17,14 +17,21 @@ class HousingViewSet(viewsets.ModelViewSet):
         queryset = Housing.objects.all()
         distance = self.request.query_params.get('distance')
         college_id = self.request.query_params.get('college_id')
+        budget = self.request.query_params.get('budget')
         ref_location = None
         search = self.request.query_params.get('search')
 
         if college_id:
-            ref_location = College.objects.get(pk=college_id).location
+            try:
+                ref_location = College.objects.get(pk=college_id).location
+            except:
+                pass
         if distance and ref_location:
             queryset = queryset.filter(location__distance_lte=(ref_location, D(km=distance))) \
                 .annotate(distance=Distance('location', ref_location)).order_by('distance')
+
+        if budget:
+            queryset = queryset.filter(Q(rent__lte=budget) | Q(rent__isnull=True))
         if search:
             queryset = queryset.filter(
                 Q(address__icontains=search) |
