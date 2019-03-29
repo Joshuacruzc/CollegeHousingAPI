@@ -1,0 +1,19 @@
+language: python
+python:
+  - "3.7"
+services:
+  - postgresql
+addons:
+  postgresql: "10"
+  apt:
+    packages:
+      - postgresql-10-postgis-2.5.1
+install:
+  - pip install -r requirements.txt
+before_script:
+  - psql -c 'create database college_housing_db;' -U postgres
+  - psql -U postgres -c "create extension postgis" -d college_housing_db
+  - python manage.py makemigrations colleges housing tags
+
+script:
+  -python test_fiile.py
