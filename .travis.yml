@@ -11,6 +11,7 @@ addons:
 install:
   - pip install -r requirements.txt
 before_script:
+  - sudo service postgresql start 10
   - psql -c 'create database college_housing_db;' -U postgres
   - psql -U postgres -c "create extension postgis" -d college_housing_db
   - python manage.py makemigrations colleges housing tags
