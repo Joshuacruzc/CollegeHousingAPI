@@ -18,6 +18,7 @@ class HousingViewSet(viewsets.ModelViewSet):
         distance = self.request.query_params.get('distance')
         college_id = self.request.query_params.get('college_id')
         budget = self.request.query_params.get('budget')
+        gender = self.request.query_params.get('gender')
         ref_location = None
         search = self.request.query_params.get('search')
 
@@ -32,6 +33,10 @@ class HousingViewSet(viewsets.ModelViewSet):
 
         if budget:
             queryset = queryset.filter(Q(rent__lte=budget) | Q(rent__isnull=True))
+
+        if gender and gender != 'U':
+            queryset = queryset.filter(Q(gender=gender) | Q(gender='U'))
+
         if search:
             queryset = queryset.filter(
                 Q(address__icontains=search) |
