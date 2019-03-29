@@ -26,4 +26,4 @@ before_script:
   - python manage.py makemigrations colleges housing tags --settings=CollegeHousing.travis_settings
 
 script:
-  -python test_fiile.py
+  - python test_file.py
