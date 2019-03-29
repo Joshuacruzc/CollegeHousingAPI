@@ -23,7 +23,6 @@ before_script:
   - sleep 5
   - sudo service postgresql status 10
   - psql -c 'create database college_housing_db;' -U postgres
-  - psql -U postgres -c "create extension postgis" -d college_housing_db
   - python manage.py makemigrations colleges housing tags
 
 script:
