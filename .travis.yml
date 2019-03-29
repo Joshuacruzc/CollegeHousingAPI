@@ -12,14 +12,11 @@ env:
     - PGUSER=postgres
     - PGPASSWORD=''
     - PGHOST=localhost
-addons:
-  postgresql: "10"
-  apt:
-    packages:
-      - postgresql-10-postgis-2.4
 install:
   - pip install -r requirements.txt
 before_script:
+  - sudo apt-get install postgresql postgresql-contrib
+  - sudo apt-get install postgis
   - sleep 5
   - sudo service postgresql status 10
   - psql -c 'create database college_housing_db;' -U postgres
