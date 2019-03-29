@@ -4,10 +4,11 @@ python:
 services:
   - postgresql
 env:
-  - PGPORT=5433
-  - PGUSER=postgres
-  - PGPASSWORD=''
-  - PGHOST=localhost
+  global: 
+    - PGPORT=5433
+    - PGUSER=postgres
+    - PGPASSWORD=''
+    - PGHOST=localhost
 addons:
   postgresql: "10"
   apt:
