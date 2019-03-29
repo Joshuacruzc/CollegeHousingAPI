@@ -12,11 +12,6 @@ env:
     - PGUSER=postgres
     - PGPASSWORD=''
     - PGHOST=localhost
-addons:
-  postgresql: "10"
-  apt:
-    packages:
-      - postgresql-10-postgis-2.4
 install:
   - pip install -r requirements.txt
 before_script:
