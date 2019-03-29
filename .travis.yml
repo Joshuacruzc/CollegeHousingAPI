@@ -23,7 +23,7 @@ before_script:
   - sleep 5
   - sudo service postgresql status 10
   - psql -c 'create database college_housing_db;' -U postgres
-  - python manage.py makemigrations colleges housing tags
+  - python manage.py makemigrations colleges housing tags --settings=CollegeHousing.travis_settings
 
 script:
   -python test_fiile.py
